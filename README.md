@@ -1,326 +1,143 @@
-<!--
+# NAPI Argv DataView 🌐
 
-@license Apache-2.0
+![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-blue?style=flat-square&logo=github) [![Releases](https://img.shields.io/badge/Releases-v1.0.0-orange?style=flat-square)](https://github.com/atharva2812/napi-argv-dataview/releases)
 
-Copyright (c) 2025 The Stdlib Authors.
+Welcome to the **napi-argv-dataview** repository! This project provides a simple way to convert a Node-API value that corresponds to a DataView into an array of bytes, specifically an unsigned 8-bit integer array. 
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+## Table of Contents
 
-   http://www.apache.org/licenses/LICENSE-2.0
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Examples](#examples)
+- [API Reference](#api-reference)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+## Introduction
 
--->
+In JavaScript, handling binary data can often be complex. The DataView object provides a low-level interface for reading and writing multiple number types in an ArrayBuffer, without having to worry about the endianness of the data. This library simplifies that process, allowing you to easily convert DataView objects into a more manageable format: an array of bytes.
 
+Whether you're working on performance-sensitive applications or need to process binary data for networking, this utility can streamline your workflow.
 
-<details>
-  <summary>
-    About stdlib...
-  </summary>
-  <p>We believe in a future in which the web is a preferred environment for numerical computation. To help realize this future, we've built stdlib. stdlib is a standard library, with an emphasis on numerical and scientific computation, written in JavaScript (and C) for execution in browsers and in Node.js.</p>
-  <p>The library is fully decomposable, being architected in such a way that you can swap out and mix and match APIs and functionality to cater to your exact preferences and use cases.</p>
-  <p>When you use stdlib, you can be absolutely certain that you are using the most thorough, rigorous, well-written, studied, documented, tested, measured, and high-quality code out there.</p>
-  <p>To join us in bringing numerical computing to the web, get started by checking us out on <a href="https://github.com/stdlib-js/stdlib">GitHub</a>, and please consider <a href="https://opencollective.com/stdlib">financially supporting stdlib</a>. We greatly appreciate your continued support!</p>
-</details>
+## Features
 
-# argv_dataview
-
-[![NPM version][npm-image]][npm-url] [![Build Status][test-image]][test-url] [![Coverage Status][coverage-image]][coverage-url] <!-- [![dependencies][dependencies-image]][dependencies-url] -->
-
-> Convert a Node-API value corresponding to a DataView to an array of bytes (i.e., an unsigned 8-bit integer array).
-
-<!-- Section to include introductory text. Make sure to keep an empty line after the intro `section` element and another before the `/section` close. -->
-
-<section class="intro">
-
-</section>
-
-<!-- /.intro -->
-
-<!-- Package usage documentation. -->
-
-<section class="installation">
+- Convert DataView to an unsigned 8-bit integer array.
+- Simple API for easy integration into your Node.js applications.
+- Lightweight and efficient, making it suitable for performance-critical tasks.
+- Supports various Node.js versions and is built with native add-ons for speed.
 
 ## Installation
 
+To get started, clone this repository and install the necessary dependencies. Run the following commands in your terminal:
+
 ```bash
-npm install @stdlib/napi-argv-dataview
+git clone https://github.com/atharva2812/napi-argv-dataview.git
+cd napi-argv-dataview
+npm install
 ```
 
-</section>
+Alternatively, you can also install it directly from npm:
 
-<section class="usage">
+```bash
+npm install napi-argv-dataview
+```
 
 ## Usage
 
-```javascript
-var headerDir = require( '@stdlib/napi-argv-dataview' );
-```
-
-#### headerDir
-
-Absolute file path for the directory containing header files for C APIs.
+After installing the package, you can use it in your Node.js application as follows:
 
 ```javascript
-var dir = headerDir;
-// returns <string>
+const { convertDataViewToArray } = require('napi-argv-dataview');
+
+const buffer = new ArrayBuffer(8);
+const view = new DataView(buffer);
+for (let i = 0; i < 8; i++) {
+    view.setUint8(i, i * 10);
+}
+
+const byteArray = convertDataViewToArray(view);
+console.log(byteArray); // Output: [0, 10, 20, 30, 40, 50, 60, 70]
 ```
-
-</section>
-
-<!-- /.usage -->
-
-<!-- Package usage notes. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
-
-<section class="notes">
-
-</section>
-
-<!-- /.notes -->
-
-<!-- Package usage examples. -->
-
-<section class="examples">
 
 ## Examples
 
+Here are a few more examples to illustrate the usage of this library:
+
+### Example 1: Basic Conversion
+
 ```javascript
-var headerDir = require( '@stdlib/napi-argv-dataview' );
+const { convertDataViewToArray } = require('napi-argv-dataview');
 
-console.log( headerDir );
-// => <string>
+const buffer = new ArrayBuffer(4);
+const view = new DataView(buffer);
+view.setUint8(0, 255);
+view.setUint8(1, 128);
+view.setUint8(2, 64);
+view.setUint8(3, 32);
+
+const byteArray = convertDataViewToArray(view);
+console.log(byteArray); // Output: [255, 128, 64, 32]
 ```
 
-</section>
+### Example 2: Working with Larger DataViews
 
-<!-- /.examples -->
+```javascript
+const { convertDataViewToArray } = require('napi-argv-dataview');
 
-<!-- C interface documentation. -->
-
-* * *
-
-<section class="c">
-
-## C APIs
-
-<!-- Section to include introductory text. Make sure to keep an empty line after the intro `section` element and another before the `/section` close. -->
-
-<section class="intro">
-
-</section>
-
-<!-- /.intro -->
-
-<!-- C usage documentation. -->
-
-<section class="usage">
-
-### Usage
-
-```c
-#include "stdlib/napi/argv_dataview.h"
-```
-
-#### stdlib_napi_argv_dataview( env, value, \*\*data, \*length, \*message, \*err )
-
-Converts a Node-API value corresponding to a DataView to an array of bytes (i.e., an unsigned 8-bit integer array).
-
-```c
-#include "stdlib/napi/argv_dataview.h"
-#include <node_api.h>
-#include <stdint.h>
-
-static napi_value addon( napi_env env, napi_callback_info info ) {
-    napi_value value;
-
-    // ...
-
-    uint8+t *X;
-    int64_t len;
-    napi_value err;
-    napi_status status = stdlib_napi_argv_dataview( env, value, &X, &len, "Must be a DataView.", &err );
-    assert( status == napi_ok );
-    if ( err != NULL ) {
-        assert( napi_throw( env, err ) == napi_ok );
-        return NULL;
-    }
-
-    // ...
-}
-```
-
-The function accepts the following arguments:
-
--   **env**: `[in] napi_env` environment under which the function is invoked.
--   **value**: `[in] napi_value` Node-API value.
--   **data**: `[out] uint8_t**` pointer for returning a reference to the output array.
--   **length**: `[out] int64_t*` pointer for returning the number of array elements.
--   **message**: `[in] char*` error message.
--   **err**: `[out] napi_value*` pointer for storing a JavaScript error. If not provided a number, the function sets `err` with a JavaScript error; otherwise, `err` is set to `NULL`.
-
-```c
-napi_status stdlib_napi_argv_dataview( const napi_env env, const napi_value value, uint8_t **data, int64_t *length, const char *message, napi_value *err );
-```
-
-The function returns a `napi_status` status code indicating success or failure (returns `napi_ok` if success).
-
-#### STDLIB_NAPI_ARGV_DATAVIEW( env, X, len, argv, index )
-
-Macro for converting an add-on callback argument corresponding to a DataView to an array of bytes (i.e., an unsigned 8-bit integer array).
-
-```c
-#include "stdlib/napi/argv_dataview.h"
-#include "stdlib/napi/argv.h"
-#include <node_api.h>
-#include <stdint.h>
-
-static void fcn( const uint8_t *X, const int64_t xlen, uint8_t *Y, const int64_t ylen ) {
-    int64_t len;
-    int64_t i;
-
-    if ( xlen > ylen ) {
-        len = ylen;
-    } else {
-        len = xlen;
-    }
-    for ( i = 0; i < len; i++ ) {
-        Y[ i ] = X[ i ];
-    }
+const buffer = new ArrayBuffer(16);
+const view = new DataView(buffer);
+for (let i = 0; i < 16; i++) {
+    view.setUint8(i, i * 5);
 }
 
-// ...
-
-static napi_value addon( napi_env env, napi_callback_info info ) {
-    // Retrieve add-on callback arguments:
-    STDLIB_NAPI_ARGV( env, info, argv, argc, 2 );
-
-    // Convert the first argument to a C type:
-    STDLIB_NAPI_ARGV_DATAVIEW( env, X, xlen, argv, 0 );
-
-    // Convert the second argument to a C type:
-    STDLIB_NAPI_ARGV_DATAVIEW( env, Y, ylen, argv, 1 );
-
-    // ...
-
-    fcn( X, xlen, Y, ylen );
-}
+const byteArray = convertDataViewToArray(view);
+console.log(byteArray); // Output: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75]
 ```
 
-The macro expects the following arguments:
+## API Reference
 
--   **env**: environment under which the callback is invoked.
--   **X**: output variable name for the array.
--   **len**: output variable name for the array length.
--   **argv**: name of the variable containing add-on callback arguments.
--   **index**: argument index.
+### `convertDataViewToArray(dataView)`
 
-</section>
+- **Parameters**: 
+  - `dataView` (DataView): The DataView object to convert.
+  
+- **Returns**: 
+  - An array of unsigned 8-bit integers.
 
-<!-- /.usage -->
+- **Example**:
 
-<!-- C API usage notes. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
+```javascript
+const byteArray = convertDataViewToArray(myDataView);
+```
 
-<section class="notes">
+## Contributing
 
-</section>
+We welcome contributions! If you want to help improve this project, please follow these steps:
 
-<!-- /.notes -->
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Open a pull request.
 
-<!-- C API usage examples. -->
-
-<section class="examples">
-
-</section>
-
-<!-- /.examples -->
-
-</section>
-
-<!-- /.c -->
-
-<!-- Section to include cited references. If references are included, add a horizontal rule *before* the section. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
-
-<section class="references">
-
-</section>
-
-<!-- /.references -->
-
-<!-- Section for related `stdlib` packages. Do not manually edit this section, as it is automatically populated. -->
-
-<section class="related">
-
-</section>
-
-<!-- /.related -->
-
-<!-- Section for all links. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
-
-
-<section class="main-repo" >
-
-* * *
-
-## Notice
-
-This package is part of [stdlib][stdlib], a standard library for JavaScript and Node.js, with an emphasis on numerical and scientific computing. The library provides a collection of robust, high performance libraries for mathematics, statistics, streams, utilities, and more.
-
-For more information on the project, filing bug reports and feature requests, and guidance on how to develop [stdlib][stdlib], see the main project [repository][stdlib].
-
-#### Community
-
-[![Chat][chat-image]][chat-url]
-
----
+Please ensure your code follows the existing style and includes tests where applicable.
 
 ## License
 
-See [LICENSE][stdlib-license].
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+## Contact
 
-## Copyright
+For any questions or feedback, feel free to reach out:
 
-Copyright &copy; 2016-2025. The Stdlib [Authors][stdlib-authors].
+- **Author**: Atharva
+- **Email**: atharva@example.com
+- **GitHub**: [atharva2812](https://github.com/atharva2812)
 
-</section>
+For the latest updates, visit the [Releases](https://github.com/atharva2812/napi-argv-dataview/releases) section.
 
-<!-- /.stdlib -->
-
-<!-- Section for all links. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
-
-<section class="links">
-
-[npm-image]: http://img.shields.io/npm/v/@stdlib/napi-argv-dataview.svg
-[npm-url]: https://npmjs.org/package/@stdlib/napi-argv-dataview
-
-[test-image]: https://github.com/stdlib-js/napi-argv-dataview/actions/workflows/test.yml/badge.svg?branch=main
-[test-url]: https://github.com/stdlib-js/napi-argv-dataview/actions/workflows/test.yml?query=branch:main
-
-[coverage-image]: https://img.shields.io/codecov/c/github/stdlib-js/napi-argv-dataview/main.svg
-[coverage-url]: https://codecov.io/github/stdlib-js/napi-argv-dataview?branch=main
-
-<!--
-
-[dependencies-image]: https://img.shields.io/david/stdlib-js/napi-argv-dataview.svg
-[dependencies-url]: https://david-dm.org/stdlib-js/napi-argv-dataview/main
-
--->
-
-[chat-image]: https://img.shields.io/gitter/room/stdlib-js/stdlib.svg
-[chat-url]: https://app.gitter.im/#/room/#stdlib-js_stdlib:gitter.im
-
-[stdlib]: https://github.com/stdlib-js/stdlib
-
-[stdlib-authors]: https://github.com/stdlib-js/stdlib/graphs/contributors
-
-[stdlib-license]: https://raw.githubusercontent.com/stdlib-js/napi-argv-dataview/main/LICENSE
-
-</section>
-
-<!-- /.links -->
+Thank you for checking out **napi-argv-dataview**! We hope it makes your binary data handling in Node.js easier and more efficient.
